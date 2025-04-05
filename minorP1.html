@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume Website</title>
+    <link rel="stylesheet" href="minorP1.css">
+</head>
+<body>
+    <header>
+        <h1>My Perfume Store</h1>
+        <nav>
+            <a href="#" onclick="showPage('home', event)">Home</a>
+            <a href="#" onclick="showPage('products', event)">Products</a>
+            <a href="#" onclick="showPage('cart', event)">Cart <span id="cart-count">(0)</span></a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Page Section -->
+        <section id="home" class="page-section">
+            <h2>Welcome to the Best Perfume Store</h2>
+            <p>Find the best deals on your favorite products.</p>
+            <a href="#" onclick="showPage('products', event)" class="btn">Shop Now</a>
+        </section>
+
+        <!-- Products Page Section -->
+        <section id="products" class="page-section" style="display:none;">
+            <h2>Featured Products</h2>
+            <div class="product-list">
+                <div class="product">
+                    <img src="ajmal perfume.png" alt="Ajmal Perfume">
+                    <h2>Ajmal Perfume</h2>
+                    <p>$20</p>
+                    <button onclick="addToCart('Ajmal Perfume', 20)">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="gucci.png" alt="Gucci Perfume">
+                    <h2>Gucci Perfume</h2>
+                    <p>$25</p>
+                    <button onclick="addToCart('Gucci Perfume', 25)">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="Versace.png" alt="Versace Perfume">
+                    <h2>Versace Perfume</h2>
+                    <p>$25</p>
+                    <button onclick="addToCart('Versace Perfume', 25)">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="rivona.png" alt="Rivona Perfume">
+                    <h2>Rivona Perfume</h2>
+                    <p>$30</p>
+                    <button onclick="addToCart('Rivona Perfume', 30)">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="Calvin klein.png" alt="Calvin Klein Perfume">
+                    <h2>Calvin Klein Perfume</h2>
+                    <p>$35</p>
+                    <button onclick="addToCart('Calvin Klein Perfume', 35)">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Page Section -->
+        <section id="cart" class="page-section" style="display:none;">
+            <h2>Your Cart</h2>
+            <ul id="cart-items"></ul>
+            <p>Total: $<span id="cart-total">0</span></p>
+            <button onclick="checkout()">Checkout</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Perfume Store. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let cartCount = 0;
+        let cartItems = [];
+        let totalPrice = 0;
+
+        // Function to show and hide different sections based on the page clicked
+        function showPage(page, event) {
+            event.preventDefault(); // Prevents default link behavior
+
+            // Hide all sections
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => section.style.display = 'none');
+
+            // Show the selected page
+            document.getElementById(page).style.display = 'block';
+
+            // If opening the cart, update UI
+            if (page === 'cart') {
+                updateCartUI();
+            }
+        }
+
+        function addToCart(product, price) {
+            cartCount++;
+            document.getElementById('cart-count').innerText = `(${cartCount})`;
+
+            cartItems.push({ name: product, price: price });
+            totalPrice += price;
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            let cartList = document.getElementById('cart-items');
+            cartList.innerHTML = '';
+
+            cartItems.forEach((item, index) => {
+                let li = document.createElement('li');
+                li.innerHTML = `${item.name} - $${item.price} <button onclick="removeFromCart(${index})">Remove</button>`;
+                cartList.appendChild(li);
+            });
+
+            document.getElementById('cart-total').innerText = totalPrice;
+        }
+
+        function removeFromCart(index) {
+            totalPrice -= cartItems[index].price;
+            cartItems.splice(index, 1);
+            cartCount--;
+            document.getElementById('cart-count').innerText = `(${cartCount})`;
+            updateCartUI();
+        }
+
+        function checkout() {
+            alert('Proceeding to checkout. Total: $' + totalPrice);
+        }
+    </script>
+</body>
+</html>
